@@ -1,0 +1,53 @@
+<div class="container py-5">
+  <!-- Si on a l'événement (via API ou fallback) → on l'affiche -->
+  <div *ngIf="currentEvent; else loadingOrNotFound" class="event-card shadow-sm p-4 rounded">
+
+    <div class="event-image mb-4 text-center">
+      <img
+        [src]="currentEvent.imageUrl || 'assets/default-event.jpg'"
+        [alt]="currentEvent.title"
+        class="img-fluid rounded"
+        style="max-height: 450px; object-fit: cover;"
+      />
+    </div>
+
+    <div class="event-info">
+      <h1 class="display-5 fw-bold mb-3">{{ currentEvent.title }}</h1>
+      <p class="lead">{{ currentEvent.description }}</p>
+
+      <div class="event-meta mt-4">
+        <p><strong>Date :</strong> {{ currentEvent.date | date:'fullDate' }}</p>
+        <p><strong>Lieu :</strong> {{ currentEvent.location }}</p>
+        <p><strong>Prix :</strong> {{ currentEvent.price }} DT</p>
+        <p><strong>Places restantes :</strong>
+          <span class="badge" [class.bg-success]="currentEvent.nbPlaces > 0" [class.bg-danger]="currentEvent.nbPlaces === 0">
+            {{ currentEvent.nbPlaces === 0 ? 'Complet' : currentEvent.nbPlaces + ' disponibles' }}
+          </span>
+        </p>
+        <p><strong>J’aime :</strong> {{ currentEvent.nbrLike }}</p>
+      </div>
+
+      <div class="event-actions mt-4 d-flex flex-wrap gap-3">
+        <button class="btn btn-primary btn-lg" [disabled]="currentEvent.nbPlaces === 0">
+          Réserver un ticket
+        </button>
+        <button class="btn btn-outline-secondary btn-lg">
+          Partager
+        </button>
+        <a [routerLink]="['/feedbacks/event', currentEvent.id]" class="btn btn-outline-success btn-lg">
+          Laisser un commentaire
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pendant le chargement ou si vraiment introuvable (très rare maintenant) -->
+  <ng-template #loadingOrNotFound>
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary mb-4" role="status">
+        <span class="visually-hidden">Chargement…</span>
+      </div>
+      <h3>Chargement de l'événement…</h3>
+    </div>
+  </ng-template>
+</div>

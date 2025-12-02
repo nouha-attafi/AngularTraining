@@ -1,0 +1,17 @@
+import { Component, NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FeedbacksComponent } from './feedbacks.component';
+import { FormComponent } from './form/form.component';
+
+const routes: Routes = [{ path: '', component: FeedbacksComponent ,
+   children:[
+  {path: 'event/:id', component: FormComponent},
+  // feedbacks-routing.module.ts
+{ path: ':id', component: FeedbacksComponent }
+] }];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class FeedbacksRoutingModule { }
